@@ -1,0 +1,5 @@
+/scrcpy/
+/__pycache__/
+/screenshots/
+*.png
+tempCodeRunner.py
