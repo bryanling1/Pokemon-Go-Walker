@@ -8,6 +8,7 @@ import time
 import config
 import pyautogui
 import movements
+import skimage.measure
 
 mon = {'top': 0,'left': 0, 'width': config.screen_size[0], 'height': config.screen_size[1]}
 sct = mss()
@@ -68,17 +69,20 @@ def getScreenImg():
 
 def drawMapBoxes(min_area=10, play_area=None):
     img = getScreenImg()
-    play_area = config.play_area
+    img = maxpool(img, 4)
+    img = bc(img, -70, 1.3)
+    # play_area = config.play_area
     output = layerHSVMasks(img, [config.filters["day"][key] for key in config.filters["day"]], subtract=True)
-    boxes = getContours(output, 10, play_area)
+    img = cv2.resize(img, (1500, 1000), interpolation=cv2.INTER_LINEAR)
+    boxes = getContours(output, 1, play_area)
     pokestops = boxes["pokestops"]
     pokemon = boxes["pokemon"]
 
-    drawBoxes(output, boxes["pokemon"], (0, 0, 255), 2)
-    drawBoxes(output, boxes["pokestops"], (255, 0, 0), 2)
+    drawBoxes(output, boxes["pokemon"], (0, 0, 255), 1)
+    drawBoxes(output, boxes["pokestops"], (255, 0, 0), 1)
+    output = cv2.resize(output, (3000, 2000))
     cv2.imshow("boxes", output)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        cv2.destroyAllWindows()
+    
 
 def getContours(img, min_area, play_area=None):
     """
@@ -96,30 +100,31 @@ def getContours(img, min_area, play_area=None):
     contours, hierarchy = cv2.findContours(pokestops_img_gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     pokestop_boxes = []
     for contour in contours:
-        cv2.drawContours(pokestops_img_gray, contour, -1, (255, 255, 255), 2)
+        # cv2.drawContours(pokestops_img_gray, contour, -1, (255, 255, 255), 1)
         area = cv2.contourArea(contour)
         arc_len = cv2.arcLength(contour, True)
         points = cv2.approxPolyDP(contour, 0.05*arc_len, False)
         x, y, w, h = cv2.boundingRect(points)
-        if area > 1000 or w > 50 or h>50:
+        if area > 0:
             if play_area is not None:
                 if arePointsInArea([(x, y), (x+w, y), (x, y+h), (x+w, y+h)], play_area):
                     pokestop_boxes.append((x, y, w, h))
             else:
                 pokestop_boxes.append((x, y, w, h))
         
-    #everthing else
+    #######################   everthing else   ################################
     img_just_pokemon = layerHSVMasks(img, [config.filters["pokestop"]], True)
+    # img_just_pokemon = layerHSVMasks(img, [], True)
     img_gray = cv2.cvtColor(img_just_pokemon, cv2.COLOR_BGR2GRAY)
     contours, hierarchy = cv2.findContours(img_gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     boxes = []
     for countour in contours:
         area = cv2.contourArea(countour)
-        cv2.drawContours(img, countour, -1, (255, 255, 255), 3)
+        cv2.drawContours(img, countour, -1, (255, 255, 255), 1)
         arc_len = cv2.arcLength(countour, True)
         points = cv2.approxPolyDP(countour, 0.05*arc_len, False)
         x, y, w, h = cv2.boundingRect(points)
-        if area > 190 and area < 1500 and w < 70 and h < 70:
+        if area > 0:
             if play_area is not None:
                 if arePointsInArea([(x, y), (x+w, y), (x, y+h), (x+w, y+h)], play_area):
                     boxes.append((x, y, w, h))
@@ -175,3 +180,11 @@ def layerHSVMasks(img, limits, subtract=False):
     for i in range(1, len(masks)):
         output = cv2.bitwise_and(output, output, mask=masks[i])
     return output
+
+def maxpool(img, f):
+    img = skimage.measure.block_reduce(img, (f, f, 1), np.max)
+    return img
+
+def bc(img, b, c):
+    a = c
+    return cv2.addWeighted(img, a, np.zeros(img.shape, img.dtype), 0, b)
