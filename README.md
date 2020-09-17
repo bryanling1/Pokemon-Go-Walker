@@ -12,4 +12,4 @@ and spinning Poké-stops to replenish items being used in the process.
 It is understood that automating game tasks is against Niantic's policies and is merely for educational uses.
 
 ## Built With
-- scrcpy[https://github.com/Genymobile/scrcpy]
+- (scrcpy)[https://github.com/Genymobile/scrcpy]
