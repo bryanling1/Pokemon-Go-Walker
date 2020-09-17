@@ -12,4 +12,22 @@ and spinning Poké-stops to replenish items being used in the process.
 It is understood that automating game tasks is against Niantic's policies and is merely for educational uses.
 
 ## Built With
-- (scrcpy)[https://github.com/Genymobile/scrcpy]
+- [Scrcpy](https://github.com/Genymobile/scrcpy)
+- [OpenCV](https://opencv.org/links/)
+- Tensorflow 2
+- Python
+- [Tensorflow's object detection API](https://github.com/tensorflow/models/tree/master/research/object_detection)
+
+## Installation
+The Pokémon Go Walker scripts is run by first connecting your phone to your computer and connecting to [Scrcpy](https://github.com/Genymobile/scrcpy).
+
+You will need to enable USB debugging (allow for screen tabs) and maximize the window before running the script
+
+## Next Steps
+- Implement updated object detection model to distinguish Pokémon gyms
+- 
+- Finish Installation guide on README
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
