@@ -21,6 +21,7 @@ It is understood that automating game tasks is against Niantic's policies and is
 ## General Program Flow
 The script can be described as immitating a basic state machine. This is to allow for correction if an object is 
 wrongly identified. Here is the current flow of the program:
+<img src="main2.jpg" width="100%"/>
 
 ## Installation
 The Pokémon Go Walker scripts is run by first connecting your phone to your computer and connecting to [Scrcpy](https://github.com/Genymobile/scrcpy).
