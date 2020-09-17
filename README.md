@@ -1,1 +1,3 @@
-# Pokemon Go Walker - A Computer Vision Script
+# Pokemon Go Walker: A Computer Vision Script
+
+
