@@ -1,5 +1,6 @@
 /scrcpy/
 /__pycache__/
+/tools/
 /screenshots/
 tempCodeRunner.py
 *.mp4
