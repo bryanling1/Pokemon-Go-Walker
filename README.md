@@ -1,3 +1,3 @@
 # Pokemon Go Walker: Computer Vision Script
 
-<img src="./previews/main.jpg" width="100%"/>
+<img src="main.jpg" width="100%"/>
