@@ -19,9 +19,10 @@ It is understood that automating game tasks is against Niantic's policies and is
 - [Tensorflow's object detection API](https://github.com/tensorflow/models/tree/master/research/object_detection)
 
 ## General Program Flow
-The script can be described as imitating a basic state machine. This is to allow for correction if an object is wrongly identified. Here is the current flow of the program:
+The script can be described as imitating a basic state machine. This is to allow for correction if an object is wrongly identified. The flow of the program is as follows:
 <img src="main2.jpg" width="100%"/>
-
+Each node consists of an object that identifies the function to run, a delay before deciding the current state to account for animation frames, and a list
+of next possible states to also account for error handling.
 ## Installation
 The Pokémon Go Walker scripts are run by first connecting your phone to your computer and connecting to [Scrcpy](https://github.com/Genymobile/scrcpy).
 
